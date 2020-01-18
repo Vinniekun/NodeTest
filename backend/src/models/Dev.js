@@ -6,6 +6,7 @@ const DevSchema = new mongoose.Schema({
     bio: String,
     avatar_url: String,
     techs: [String],
+    
 });
 
 module.exports = mongoose.model('Dev', DevSchema);
