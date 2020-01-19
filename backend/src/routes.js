@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const axios = require('axios');
-const Dev = require('./models/Dev')
+const Dev = require('./models/Dev');
+const clientController = require('./controllers/ClientController');
 
 const routes = Router();
 
@@ -30,8 +31,10 @@ routes.post('/devs', async (request, response) => {
     return response.json(dev);
 });
 
-routes.get('/', (request, response) => {
-    return response.send('Hello World!');
-});
+//Adicionar clientes
+routes.post('/addcliente', clientController.addClient);
+
+//Home
+routes.get('/', clientController.index);
 
 module.exports = routes;
