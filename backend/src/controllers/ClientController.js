@@ -1,4 +1,5 @@
 const Cliente = require('../models/Clientes');
+const mailer = require('nodemailer');
 
 //index, show(unico), add, update, delete
 
@@ -27,6 +28,30 @@ module.exports = {
             });
         }
         
+        //Enviar email
+        var transporter = mailer.createTransport({
+            service: 'yandex',
+            auth: {
+              user: 'vdreifke@yandex.com',
+              pass: 'abcabc123'
+            }
+          });
+
+          var mailOptions = {
+            from: 'vdreifke@yandex.com',
+            to: 'vdreifke@yandex.com',
+            subject: 'Um usuario foi criado',
+            text: 'O usuario ' + nome + ' foi criado com sucesso.' 
+          };
+          
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+
         return response.send('Cliente: ' + nome + ' adicionado no banco de clientes.' + client);
     },
     

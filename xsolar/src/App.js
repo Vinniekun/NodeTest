@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from './services/api';
+import Modal from 'react-modal';
 
 import './global.css';
 import './App.css';
@@ -7,6 +8,32 @@ import './Sidebar.css';
 import './Main.css';
 
 function App(){
+    
+    const customStyles = {
+        content : {
+            top                   : '50%',
+            left                  : '50%',
+            right                 : 'auto',
+            bottom                : 'auto',
+            marginRight           : '-50%',
+            transform             : 'translate(-50%, -50%)'
+        }
+    };
+
+    var subtitle;
+    const [modalIsOpen,setIsOpen] = React.useState(false);
+    function openModal() {
+        setIsOpen(true);
+    }
+
+    function afterOpenModal() {
+        // references are now sync'd and can be accessed.
+        
+    }
+
+    function closeModal(){
+        setIsOpen(false);
+    }
 
     //Estados
     const [clients, setClients] = useState([]);
@@ -25,6 +52,8 @@ function App(){
     const [ tipo, setTipo ] = useState('');
     const [ end_secundario, setEndSecundario ] = useState('');
 
+    
+
     //Acao do submit do formulario
     useEffect(() => {
         console.log("chamada");
@@ -39,9 +68,19 @@ function App(){
         loadClients();
     }, []);
 
+    async function deleteClient(id) {
+        const response = await api.delete('/delete?id=' + id);
+        alert("Usuario removido");
+        window.location.reload();
+    }
+
+    async function editClient(id) {
+        alert("TODO");
+    }
+
     async function handleAddClient(e) {
         //Previne que a tela de um refresh, o comportamento padrao
-        e.preventDefault();
+        //e.preventDefault();
 
         const response = await api.post('/addcliente', {
             nome,
@@ -74,7 +113,8 @@ function App(){
         setEndSecundario('');
 
         //...clients = carrega todos os que ja tem e adiciona o novo (response.data)
-        setClients([...clients, response.data]);
+        //setClients([...clients, response.data]);
+        window.location.reload();
     }
 
     
@@ -172,12 +212,51 @@ function App(){
                                     <span>{client.cidade} - {client.estado}</span>
                                 </div>
                             </header>
-                        <p>{client.cpf}, {client.telefone}, {client.cep}, {client.bairro}</p>
-                        <p>{client.rua}, {client.numero}, {client.complemento}, {client.tipo}, {client.end_secundario}</p>
-                        <a href={client.email}>{client.email}</a>
+                            <p>{client.cpf}, {client.telefone}, {client.cep}, {client.bairro}</p>
+                            <p>{client.rua}, {client.numero}, {client.complemento}, {client.tipo}, {client.end_secundario}</p>
+                            <a href={client.email}>{client.email}</a>
                         <p>
-                            <button type="submit" className="edit-button">Editar</button>
-                            <button type="submit" className="delete-button">Deletar</button>
+                            <button type="submit" className="edit-button" onClick={ openModal}>Editar</button>
+                            <Modal
+                                isOpen={modalIsOpen}
+                                onAfterOpen={afterOpenModal}
+                                onRequestClose={closeModal}
+                                style={customStyles}
+                                contentLabel="Editar cliente"
+                                >
+
+                                <h2 ref={_subtitle => (subtitle = _subtitle)}>Editar Cliente</h2>
+                                
+                                <aside>
+                                <form>
+                                <div className="input-block">
+                                    <label htmlFor="nome">Nome</label>
+                                    <input
+                                        name="nome" 
+                                        id="nome" 
+                                        required
+                                        value={nome}
+                                        onChange={e => setNome(e.target.value)}/>
+                                </div>
+                                <div className="input-block">
+                                    <label htmlFor="CPF">CPF</label>
+                                    <input
+                                        name="cpf" 
+                                        id="cpf" 
+                                        required
+                                        value={cpf}
+                                        onChange={e => setCpf(e.target.value)}/>
+                                </div>
+
+                                <p>
+                                    <button className="edit-button">Confirmar</button>
+                                    <button onClick={closeModal} className="edit-button">Fechar</button>    
+                                </p>
+                            
+                                </form>
+                                </aside>
+                                </Modal>
+                            <button type="submit" className="delete-button" onClick={ (e) => deleteClient(client._id, e)}>Deletar</button>
                         </p>
                         
                     </li>
