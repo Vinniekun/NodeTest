@@ -37,37 +37,30 @@ module.exports = {
     },
 
     async update(request, response) {
-        const body = request.body;
-        const id = body._id;
-
-        const client = await Cliente.findByIdAndUpdate(id, {
-            nome : body.nome,
-            cpf : body.cpf,
-            telefone : body.telefone,
-            email : body.email,
-            cep : body.cep,
-            cidade : body.cidade,
-            estado : body.estado,
-            bairro : body.bairro,
-            rua : body.rua,
-            numero : body.numero,
-            complemento : body.complemento,
-            tipo : body.tipo,
-            end_secundario : body.end_secundario
-
+        var id = request.body._id;
+        delete request.body_id;
+        
+        const client = await Cliente.update({_id : id}, request.body, function(err){
+            if(err)
+                response.send('error');
+                
+            else{
+                console.log("Sucesso");
+            }
+            
         });
 
         if(!client){
             console.log('Cliente não encontrado')
         }
 
-        return response.Send( 'Cliente ' + body.nome + ' alterado.' );
+        return response.send( 'Cliente alterado.' );
     },
 
     async destroy(request, response){
         const id = request.query.id;
-
         const client = await Cliente.findByIdAndRemove(id);
+        
 
         return response.json( 'Cliente ' + client.nome + ' foi removido.');
     }

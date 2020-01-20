@@ -1,0 +1,91 @@
+main {
+    flex: 1;
+}
+
+main ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    list-style: none;
+}
+
+@media (max-width: 650px){
+    main ul {
+        grid-template-columns: 1fr;
+    }
+}
+
+button.edit-button {
+    width: 45%;
+    border: 0;
+    margin-top: 5px;
+    margin-right: 15px;
+    background: #7d40e7;
+    border-radius: 20px;
+    padding: 15px 20px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.5s;
+}
+
+button.delete-button {
+    width: 45%;
+    border: 0;
+    margin-top: 5px;
+    background: #7d40e7;
+    border-radius: 20px;
+    padding: 15px 20px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.5s;
+}
+
+button.delete-button[type=submit]:hover {
+    background: #693999;
+}
+
+li.user-item {
+    background: #FFF;
+    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.02);
+    border-radius: 2px;
+    padding: 20px;
+}
+
+li.user-item header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+li.user-item header img {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+}
+
+li.user-item header .user-info{
+    margin-left: 10px;
+}
+
+.user-info strong {
+    display: block;
+    font-size: 16px;
+    color: #333;
+}
+
+.user-info span{
+    font-size: 13px;
+    color: #999;
+    margin-top: 2px;
+}
+
+li.user-item p {
+    color: #666;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 10px 0;
+}

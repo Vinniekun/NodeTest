@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const EnderecoSchema = require('./Utils/Endereco');
 
 const ClienteSchema = new mongoose.Schema({
     tipoConta: {
@@ -12,27 +11,51 @@ const ClienteSchema = new mongoose.Schema({
     },
     cpf: {
         type: Number,
-        required : true,
+        //required : true,
         unique : true
     },
     telefone: Number,
     email: {
         type: String,
-        required : true,
+        //required : true,
         unique : true
     },
     cep: {
         type : Number,
-        required : true
+        //required : true
     },
-    cidade: String,
-    estado: String,
-    bairro: String,
-    rua: String,
-    numero: Number,
-    complemento: String,
-    tipo: String,  //Selecionar comercial, residencial, rural, outro
-    end_secundario: String
+    cidade: {
+        type : String,
+        default : 'Chapeco'
+    },
+    estado: {
+        type : String,
+        default : 'Santa Catarina'
+    },
+    bairro: {
+        type : String,
+        default : 'Centro'
+    },
+    rua: {
+        type : String,
+        default : 'Nereu Ramos'
+    },
+    numero: {
+        type : Number,
+        default : '123'
+    },
+    complemento: {
+        type : String,
+        default : 'Casa'
+    },
+    tipo: {
+        type : String,
+        default : 'Residencial'
+    },  //Selecionar comercial, residencial, rural, outro
+    end_secundario: {
+        type : String,
+        default : 'nenhum end secundario'
+    },
 });
 
 module.exports = mongoose.model('Clientes', ClienteSchema);
