@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const EnderecoSchema = new mongoose.Schema({
     endereco: {
-        cep: String,
+        cep: Number,
         cidade: String,
         estado: String,
         bairro: String,

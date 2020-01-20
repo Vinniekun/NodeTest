@@ -1,40 +1,24 @@
 const { Router } = require('express');
-const axios = require('axios');
-const Dev = require('./models/Dev');
+
 const clientController = require('./controllers/ClientController');
+const searchController = require('./controllers/SearchController');
 
 const routes = Router();
-
-routes.post('/devs', async (request, response) => {
-    const { github_username, techs} = request.body;
-    const apiResponse = await axios.get(`https://api.github.com/users/${github_username}`);    
-    
-    //const { name = login, avatar_url, bio} = apiResponse.data;
-    let { name, avatar_url, bio} = apiResponse.data;
-
-    if(!name){
-        name = apiResponse.data.login;
-    }
-
-    const techsArray = techs.split(',').map(techs => techs.trim());
-
-    const dev = await Dev.create({
-        github_username,
-        name,
-        avatar_url,
-        bio,
-        techs: techsArray,
-    })
-
-    console.log(name, avatar_url, bio, github_username);
-
-    return response.json(dev);
-});
 
 //Adicionar clientes
 routes.post('/addcliente', clientController.addClient);
 
 //Home
 routes.get('/', clientController.index);
+
+//Busca
+routes.get('/search', searchController.index);
+
+//Update
+routes.put('/update', clientController.update);
+
+//Destroy
+routes.delete('/delete', clientController.destroy);
+
 
 module.exports = routes;
